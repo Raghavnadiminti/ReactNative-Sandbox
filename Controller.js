@@ -13,7 +13,7 @@ const ManipulateCode = (code) => {
 const buildImage = (imageName, folder) => {
   return new Promise((resolve, reject) => {
     const absPath = path.resolve(folder);
-    const cmd = `docker build -t ${imageName} "/home/ec2-user/rama/ram"`;
+    const cmd = `sudo docker build -t ${imageName} "/home/ec2-user/rama/ram"`;
 
     console.log("Running:", cmd);
 
@@ -31,7 +31,7 @@ const buildImage = (imageName, folder) => {
 
 const runImage = (imageName) => {
   return new Promise((resolve, reject) => {
-    const cmd = `docker run -d -p 0:19006 ${imageName}`;
+    const cmd = `sudo docker run -d -p 0:19006 ${imageName}`;
 
     exec(cmd, (error, stdout, stderr) => {
       if (error) {
@@ -42,7 +42,7 @@ const runImage = (imageName) => {
       const containerId = stdout.trim();
 
       exec(
-        `docker inspect ${containerId} --format="{{(index (index .NetworkSettings.Ports \\"19006/tcp\\") 0).HostPort}}"`,
+        `sudo docker inspect ${containerId} --format="{{(index (index .NetworkSettings.Ports \\"19006/tcp\\") 0).HostPort}}"`,
         (err, portStdout) => {
           if (err) return reject(err);
 
