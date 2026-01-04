@@ -13,7 +13,7 @@ const ManipulateCode = (code) => {
 const buildImage = (imageName, folder) => {
   return new Promise((resolve, reject) => {
     const absPath = path.resolve(folder);
-    const cmd = `docker build -t ${imageName} ${absPath}`;
+    const cmd = `docker build -t ${imageName} "/home/ec2-user/rama/ram"`;
 
     console.log("Running:", cmd);
 

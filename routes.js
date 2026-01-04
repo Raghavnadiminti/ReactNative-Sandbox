@@ -8,7 +8,7 @@ router.get('/getcode',async (req,res)=>{
    try{  const {code}=req.body 
 
      ManipulateCode(code)
-     await buildImage('sandbox1',rama) 
+     await buildImage('sandbox1',"rama") 
      await runImage('sandbox1')
 }
 catch(error){
