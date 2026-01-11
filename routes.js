@@ -10,6 +10,8 @@ router.get('/getcode',async (req,res)=>{
      ManipulateCode(code)
      await buildImage('sandbox1',"rama") 
      await runImage('sandbox1')
+
+     res.json({"url":"https://51.21.167.159:"})
 }
 catch(error){
      console.log(error)
