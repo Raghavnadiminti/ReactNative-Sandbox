@@ -31,7 +31,7 @@ const buildImage = (imageName, folder) => {
 
 const runImage = (imageName) => {
   return new Promise((resolve, reject) => {
-    const cmd = `sudo docker run -d -p 8081:19006 ${imageName}`;
+    const cmd = `sudo docker run -d -p 0:19006 ${imageName}`;
 
     exec(cmd, (error, stdout, stderr) => {
       if (error) {
