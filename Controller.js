@@ -31,30 +31,30 @@ const buildImage = (imageName, folder) => {
 
 const runImage = (imageName,port) => {
   return new Promise((resolve, reject) => {
-    const cmd = `sudo docker run -d -p ${port}:19006 ${imageName}`;
+    // const cmd = `sudo docker run -d -p ${port}:19006 ${imageName}`;
+    console.log(imageName,port)
+    // exec(cmd, (error, stdout, stderr) => {
+    //   if (error) {
+    //     console.error("Run failed:", stderr);
+    //     return reject(error);
+    //   }
 
-    exec(cmd, (error, stdout, stderr) => {
-      if (error) {
-        console.error("Run failed:", stderr);
-        return reject(error);
-      }
+    //   const containerId = stdout.trim();
 
-      const containerId = stdout.trim();
+    //   exec(
+    //     `sudo docker inspect ${containerId} --format="{{(index (index .NetworkSettings.Ports \\"19006/tcp\\") 0).HostPort}}"`,
+    //     (err, portStdout) => {
+    //       if (err) return reject(err);
 
-      exec(
-        `sudo docker inspect ${containerId} --format="{{(index (index .NetworkSettings.Ports \\"19006/tcp\\") 0).HostPort}}"`,
-        (err, portStdout) => {
-          if (err) return reject(err);
+    //       const port = portStdout.trim();
 
-          const port = portStdout.trim();
-
-          resolve({
-            containerId,
-            port,
-          });
-        }
-      );
-    });
+    //       resolve({
+    //         containerId,
+    //         port,
+    //       });
+    //     }
+    //   );
+    // });
   });
 };
 
