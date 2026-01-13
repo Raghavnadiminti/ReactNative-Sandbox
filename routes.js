@@ -4,7 +4,7 @@ const router=express.Router()
 
 
 
-router.get('/getcode',async (req,res)=>{
+router.post('/getcode',async (req,res)=>{
    try{  const {userId,code,port}=req.body 
 
    if(!userId || !port){
