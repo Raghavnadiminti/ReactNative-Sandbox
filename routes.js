@@ -5,13 +5,13 @@ const router=express.Router()
 
 
 router.get('/getcode',async (req,res)=>{
-   try{  const {userid,code,port}=req.body 
+   try{  const {userId,code,port}=req.body 
 
-   if(!userid || !port){
+   if(!userId || !port){
        return res.status(401).json({"message":"failed port and useris required"})
    }
 
-     const imageName='sandbox'+userid
+     const imageName='sandbox'+userId
      ManipulateCode(code)
      await buildImage(imageName,"rama") 
      const {containerId,port1}=await runImage(imageName,port)
