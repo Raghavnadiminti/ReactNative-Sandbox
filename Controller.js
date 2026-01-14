@@ -58,8 +58,31 @@ const runImage = (imageName,port) => {
   });
 };
 
+
+const killContainersByImage = (imageName) => {
+  return new Promise((resolve, reject) => {
+    const cmd = `sudo docker ps -aq --filter ancestor=${imageName}`;
+
+    exec(cmd, (err, stdout) => {
+      if (err) return reject(err);
+
+      const ids = stdout.trim();
+      if (!ids) {
+        return resolve("No containers found for this image");
+      }
+
+      const killCmd = `sudo docker rm -f ${ids}`;
+      exec(killCmd, (err2) => {
+        if (err2) return reject(err2);
+        resolve(`Killed and removed containers: ${ids}`);
+      });
+    });
+  });
+};
+
 module.exports = {
   ManipulateCode,
   buildImage,
   runImage,
+  killContainersByImage,
 };

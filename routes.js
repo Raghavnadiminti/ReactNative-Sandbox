@@ -1,5 +1,5 @@
 const express= require('express') 
-const {ManipulateCode,buildImage,runImage} = require('./Controller')
+const {ManipulateCode,buildImage,runImage,killContainersByImage} = require('./Controller')
 const router=express.Router() 
 
 
@@ -23,6 +23,32 @@ catch(error){
 }
 })
 
+router.post("/cleanup-images", async (req, res) => {
+  try {
+    const { images } = req.body; 
+
+    if (!images || !Array.isArray(images) || images.length === 0) {
+      return res.status(400).json({
+        message: "images must be a non-empty array",
+      });
+    }
+
+    const results = [];
+
+    for (const imageName of images) {
+      const result = await killContainersByImage(imageName);
+      results.push({ imageName, result });
+    }
+
+    res.status(200).json({
+      message: "Cleanup done",
+      results,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Cleanup failed" });
+  }
+});
 
 
 module.exports={router}
