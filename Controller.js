@@ -28,36 +28,39 @@ const buildImage = (imageName, folder) => {
     });
   });
 };
+const runImage = async (imageName, port) => {
+  try {
+ 
+    await killContainersByImage(imageName);
 
-const runImage = (imageName,port) => {
-  return new Promise((resolve, reject) => {
     const cmd = `sudo docker run -d -p ${port}:19006 ${imageName}`;
-    console.log(imageName,port)
-    exec(cmd, (error, stdout, stderr) => {
-      if (error) {
-        console.error("Run failed:", stderr);
-        return reject(error);
-      }
+    console.log(imageName, port);
 
-      const containerId = stdout.trim();
+    const containerId = await new Promise((resolve, reject) => {
+      exec(cmd, (error, stdout, stderr) => {
+        if (error) {
+          console.error("Run failed:", stderr);
+          return reject(error);
+        }
+        resolve(stdout.trim());
+      });
+    });
 
+    const port1 = await new Promise((resolve, reject) => {
       exec(
         `sudo docker inspect ${containerId} --format="{{(index (index .NetworkSettings.Ports \\"19006/tcp\\") 0).HostPort}}"`,
-        (err, portStdout) => {
+        (err, stdout) => {
           if (err) return reject(err);
-
-          const port1 = portStdout.trim();
-
-          resolve({
-            containerId,
-            port1,
-          });
+          resolve(stdout.trim());
         }
       );
     });
-  });
-};
 
+    return { containerId, port1 };
+  } catch (err) {
+    throw err;
+  }
+};
 
 const killContainersByImage = (imageName) => {
   return new Promise((resolve, reject) => {
