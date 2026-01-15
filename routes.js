@@ -16,7 +16,7 @@ router.post('/getcode',async (req,res)=>{
      await buildImage(imageName,"rama") 
      const {containerId,port1}=await runImage(imageName,port)
      console.log(port1)
-     res.status(200).json({"url":`http://13.48.27.153:${port1}`})
+     res.status(200).json({"url":`http://13.60.85.247:${port1}`})
 }
 catch(error){
      console.log(error)
